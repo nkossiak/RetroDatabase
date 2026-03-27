@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Retro Collection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Retro Collection</h1>
+        <p>NES & SNES Library</p>
+
+        <nav class="top-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <main class="about-page">
+        <img src="images/retro.gif" alt="Retro gaming scene" class="about-gif">
+
+<div class="about-description">
+    <p id="typewriter-text"></p>
+</div>
+
+<script>
+const text = "Take a digital copy of your retro collection wherever you go! Never be at a pawn shop holding a rare cartridge wondering whether or not it is already part of your collection.";
+const target = document.getElementById("typewriter-text");
+
+let i = 0;
+
+function typeWriter() {
+    if (i < text.length) {
+        target.textContent += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 35);
+    }
+}
+
+typeWriter();
+</script>
+</body>
+</html>
