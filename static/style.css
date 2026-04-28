@@ -628,56 +628,130 @@ button:hover {
     text-align: center;
 }
 
-.edit-btn,
+/* ================= PIXEL ICON BUTTONS ================= */
+
+.trash-btn,
 .save-edit-btn,
 .cancel-edit-btn {
-    background: transparent;
-    box-shadow: none;
-    padding: 0.4rem;
-    font-size: 1rem;
-}
+    width: 22px;
+    height: 22px;
 
-.edit-btn:hover,
-.save-edit-btn:hover,
-.cancel-edit-btn:hover {
-    background: transparent;
-    box-shadow: none;
-    transform: scale(1.1);
-}
+    position: relative;
 
-.edit-input {
-    width: 100%;
-    padding: 0.4rem;
-
-    font-family: 'Press Start 2P', monospace;
-    font-size: 0.6rem;
-
-    color: #fff;
     background: #1a1535;
-
     border: 2px solid #000;
-    border-radius: 0;
 
     box-shadow:
         inset -2px -2px 0 #000,
         inset 2px 2px 0 #555;
 
-    outline: none;
+    cursor: pointer;
 }
 
-.trash-btn {
-    background: transparent;
-    box-shadow: none;
-    padding: 0.4rem;
-    font-size: 1rem;
+/* Hover (same style system you already use) */
+.edit-btn:hover,
+.trash-btn:hover,
+.save-edit-btn:hover,
+.cancel-edit-btn:hover {
+    border-color: #7a5cff;
+
+    box-shadow:
+        inset -2px -2px 0 #0d0b1f,
+        inset 2px 2px 0 #7a5cff;
+
+    transform: translateY(-1px);
 }
 
-.trash-btn:hover {
-    background: transparent;
-    box-shadow: none;
-    transform: scale(1.1);
+
+/* ===== EDIT (pencil) ===== */
+.edit-btn::before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 3px;
+    background: #fff;
+
+    top: 9px;
+    left: 5px;
+
+    transform: rotate(-45deg);
 }
 
+.edit-btn::after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #e6d97a;
+
+    top: 6px;
+    left: 12px;
+
+    transform: rotate(-45deg);
+}
+
+
+/* ===== TRASH ===== */
+.trash-btn::before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 8px;
+    background: #414141;
+
+    top: 8px;
+    left: 5px;
+}
+
+.trash-btn::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 2px;
+    background: #fff;
+
+    top: 5px;
+    left: 4px;
+}
+
+
+/* ===== SAVE (check) ===== */
+.save-edit-btn::before {
+    content: "";
+    position: absolute;
+
+    width: 6px;
+    height: 3px;
+    border-left: 2px solid #4dff88;
+    border-bottom: 2px solid #4dff88;
+
+    transform: rotate(-45deg);
+
+    top: 9px;
+    left: 6px;
+}
+
+
+/* ===== CANCEL (X) ===== */
+.cancel-edit-btn::before,
+.cancel-edit-btn::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 2px;
+    background: #000000;
+
+    top: 10px;
+    left: 5px;
+}
+
+.cancel-edit-btn::before {
+    transform: rotate(45deg);
+}
+
+.cancel-edit-btn::after {
+    transform: rotate(-45deg);
+}
 
 /* ================= FILTER ================= */
 

@@ -72,9 +72,9 @@ function addGameRow(gameId, title, consoleName, year, completed) {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-        <td class="title-cell">${title}</td>
-        <td class="console-cell">${consoleName}</td>
-        <td class="year-cell">${year}</td>
+        <td class="title-cell editable-cell" data-id="${gameId}">${title}</td>
+        <td class="console-cell editable-cell" data-id="${gameId}">${consoleName}</td>
+        <td class="year-cell editable-cell" data-id="${gameId}">${year}</td>
 
         <td class="completed-cell">
             <button class="pixel-status ${completed === "Yes" ? "done" : "not-done"} toggle-completed-btn"
@@ -84,13 +84,7 @@ function addGameRow(gameId, title, consoleName, year, completed) {
         </td>
 
         <td class="delete-cell">
-            <button class="edit-btn" type="button" data-id="${gameId}">✎</button>
-        </td>
-
-        <td class="delete-cell">
-            <button class="trash-btn remove-row-btn" type="button" data-id="${gameId}" title="Remove">
-                🗑
-            </button>
+            <button class="trash-btn remove-row-btn" type="button" data-id="${gameId}" title="Remove"></button>
         </td>
     `;
 
@@ -100,7 +94,6 @@ function addGameRow(gameId, title, consoleName, year, completed) {
 gameTableBody.addEventListener("click", async function (event) {
     const removeBtn = event.target.closest(".remove-row-btn");
     const toggleBtn = event.target.closest(".toggle-completed-btn");
-    const editBtn = event.target.closest(".edit-btn");
     const saveBtn = event.target.closest(".save-edit-btn");
     const cancelBtn = event.target.closest(".cancel-edit-btn");
 
@@ -126,17 +119,11 @@ gameTableBody.addEventListener("click", async function (event) {
         return;
     }
 
-    if (editBtn) {
-        const row = editBtn.closest("tr");
-        enterEditMode(row, editBtn.dataset.id);
-        return;
-    }
-
     if (saveBtn) {
         const row = saveBtn.closest("tr");
         const gameId = saveBtn.dataset.id;
 
-        const title = row.querySelector(".edit-title").value.trim();
+        const title = row.querySelector(".edit-title").focus();
         const consoleName = row.querySelector(".edit-console").value;
         const year = row.querySelector(".edit-year").value.trim() || null;
         const completed = row.querySelector(".toggle-completed-btn").classList.contains("done");
@@ -168,7 +155,70 @@ gameTableBody.addEventListener("click", async function (event) {
     }
 });
 
+gameTableBody.addEventListener("dblclick", function (event) {
+    const editableCell = event.target.closest(".editable-cell");
+
+    if (!editableCell) {
+        return;
+    }
+
+    const row = editableCell.closest("tr");
+    const gameId = editableCell.dataset.id;
+
+    enterEditMode(row, gameId);
+});
+
+function attachEditListeners(row, gameId) {
+    const inputs = row.querySelectorAll(".edit-input");
+
+    inputs.forEach(input => {
+        input.addEventListener("keydown", async function (e) {
+
+            // ===== SAVE (ENTER) =====
+            if (e.key === "Enter") {
+                e.preventDefault();
+
+                const title = row.querySelector(".edit-title").value.trim();
+                const consoleName = row.querySelector(".edit-console").value;
+                const year = row.querySelector(".edit-year").value.trim() || null;
+                const completed = row.querySelector(".toggle-completed-btn").classList.contains("done");
+
+                if (title === "") {
+                    alert("Please enter a game title.");
+                    return;
+                }
+
+                await fetch(`/api/games/${gameId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        console: consoleName,
+                        year: year,
+                        completed: completed
+                    })
+                });
+
+                loadGames();
+            }
+
+            // ===== CANCEL (ESC) =====
+            if (e.key === "Escape") {
+                loadGames();
+            }
+        });
+    });
+}
+
 function enterEditMode(row, gameId) {
+    if (row.classList.contains("editing")) {
+        return;
+    }
+
+    row.classList.add("editing");
+
     const title = row.querySelector(".title-cell").textContent;
     const consoleName = row.querySelector(".console-cell").textContent;
     const year = row.querySelector(".year-cell").textContent;
@@ -187,14 +237,9 @@ function enterEditMode(row, gameId) {
     row.querySelector(".year-cell").innerHTML = `
         <input class="edit-input edit-year" type="number" value="${year === "N/A" ? "" : year}">
     `;
+    
+    attachEditListeners(row, gameId);
 
-    row.querySelector(".edit-btn").outerHTML = `
-        <button class="save-edit-btn" type="button" data-id="${gameId}">✓</button>
-    `;
-
-    row.querySelector(".remove-row-btn").outerHTML = `
-        <button class="cancel-edit-btn" type="button">✕</button>
-    `;
 }
 
 completionFilter.addEventListener("change", loadGames);
