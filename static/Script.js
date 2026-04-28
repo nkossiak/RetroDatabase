@@ -80,7 +80,7 @@ function addGameRow(gameId, title, consoleName, year, completed) {
             <button class="pixel-status ${completed === "Yes" ? "done" : "not-done"} toggle-completed-btn"
                     type="button"
                     data-id="${gameId}">
-                ${completed === "Yes" ? " ! " : " X "}
+                ${completed === "Yes" ? "" : ""}
             </button>
         </td>
 
