@@ -177,6 +177,46 @@ def add_game():
 
     return {"status": "ok"}
 
+# --- EDIT GAME ---
+@app.route("/api/games/<int:game_id>", methods=["PUT"])
+def edit_game(game_id):
+    if "user_id" not in session:
+        return {"status": "not logged in"}, 401
+
+    data = request.json
+
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute(
+        "SELECT console_id FROM consoles WHERE console_name = %s",
+        (data["console"],)
+    )
+
+    console_id = cursor.fetchone()[0]
+
+    cursor.execute("""
+        UPDATE games
+        SET console_id = %s,
+            title = %s,
+            release_year = %s,
+            completed = %s
+        WHERE game_id = %s AND user_id = %s
+    """, (
+        console_id,
+        data["title"],
+        data["year"],
+        data["completed"],
+        game_id,
+        session["user_id"]
+    ))
+
+    db.commit()
+
+    cursor.close()
+    db.close()
+
+    return {"status": "updated"}
 
 # --- DELETE GAME ---
 @app.route("/api/games/<int:game_id>", methods=["DELETE"])

@@ -1,3 +1,5 @@
+/* ================= GLOBAL ================= */
+
 html, body {
     min-height: 100%;
 }
@@ -7,15 +9,18 @@ body {
     font-family: 'Press Start 2P', monospace;
 
     background:
-    radial-gradient(circle at 20% 30%, rgba(120, 80, 255, 0.15), transparent 40%),
-    radial-gradient(circle at 80% 70%, rgba(255, 100, 200, 0.12), transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(80, 150, 255, 0.08), transparent 50%),
-    #05040f;  /* MUCH darker base */
+    radial-gradient(circle at 20% 30%, rgba(121, 80, 255, 0.332), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255, 100, 201, 0.315), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(80, 150, 255, 0.271), transparent 50%),
+    #05040f;
 
     background-attachment: fixed;
 
     color: #fff;
 }
+
+
+/* ================= STAR BACKGROUND ================= */
 
 body::before {
     content: "";
@@ -23,24 +28,43 @@ body::before {
     inset: 0;
     pointer-events: none;
 
-    background:
-        radial-gradient(1px 1px at 12% 25%, white, transparent),
-        radial-gradient(1px 1px at 78% 44%, white, transparent),
-        radial-gradient(1.5px 1.5px at 30% 70%, rgba(255,255,255,0.8), transparent),
-        radial-gradient(1px 1px at 55% 15%, white, transparent),
-        radial-gradient(2px 2px at 85% 80%, rgba(200,180,255,0.9), transparent),
-        radial-gradient(1px 1px at 65% 60%, white, transparent),
-        radial-gradient(1px 1px at 20% 90%, white, transparent),
-        radial-gradient(1.5px 1.5px at 40% 40%, rgba(255,255,255,0.7), transparent),
-        radial-gradient(1px 1px at 90% 10%, white, transparent);
+background:
+    radial-gradient(1.5px 1.5px at 12% 25%, rgba(255,255,255,1), transparent),
+    radial-gradient(1.5px 1.5px at 78% 44%, rgba(255,255,255,1), transparent),
+    radial-gradient(2px 2px at 30% 70%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1.5px 1.5px at 55% 15%, rgba(255,255,255,1), transparent),
+    radial-gradient(2.5px 2.5px at 85% 80%, rgba(200,180,255,1), transparent),
+    radial-gradient(1.5px 1.5px at 65% 60%, rgba(255,255,255,1), transparent),
+    radial-gradient(1.5px 1.5px at 20% 90%, rgba(255,255,255,1), transparent),
+    radial-gradient(2px 2px at 40% 40%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1.5px 1.5px at 90% 10%, rgba(255,255,255,1), transparent);
 
     background-repeat: repeat;
     background-size: 300px 300px;
 
-    opacity: 0.5;
+opacity: 0.7;
+filter: drop-shadow(0 0 4px rgba(255,255,255,0.6));
     z-index: 0;
 
     animation: moveStars 120s linear infinite, twinkleStars 5s ease-in-out infinite alternate;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+
+    background:
+        radial-gradient(2.5px 2.5px at 25% 35%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1.5px 1.5px at 70% 75%, rgba(255,255,255,0.5), transparent);
+
+    background-size: 500px 500px;
+
+    opacity: 0.5;
+    filter: drop-shadow(0 0 3px rgba(255,255,255,0.5));
+
+    animation: moveStars 200s linear infinite reverse;
 }
 
 @keyframes moveStars {
@@ -63,22 +87,96 @@ body::before {
     }
 }
 
-body::after {
+
+/* ================= HEADER ================= */
+
+header {
+    text-align: center;
+    padding: 1.8rem 2rem;
+    background: #000;
+    border-bottom: 3px solid #7a5cff;
+    box-shadow: 0 2px 10px rgba(122, 92, 255, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+header::before {
     content: "";
-    position: fixed;
+    position: absolute;
     inset: 0;
     pointer-events: none;
 
     background:
-        radial-gradient(2px 2px at 25% 35%, rgba(255,255,255,0.4), transparent),
-        radial-gradient(1px 1px at 70% 75%, rgba(255,255,255,0.3), transparent);
+        radial-gradient(1.5px 1.5px at 12% 25%, rgba(255,255,255,1), transparent),
+        radial-gradient(1.5px 1.5px at 78% 44%, rgba(255,255,255,1), transparent),
+        radial-gradient(2px 2px at 30% 70%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1.5px 1.5px at 55% 15%, rgba(255,255,255,1), transparent),
+        radial-gradient(2.5px 2.5px at 85% 80%, rgba(200,180,255,1), transparent),
+        radial-gradient(1.5px 1.5px at 65% 60%, rgba(255,255,255,1), transparent),
+        radial-gradient(1.5px 1.5px at 20% 90%, rgba(255,255,255,1), transparent),
+        radial-gradient(2px 2px at 40% 40%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1.5px 1.5px at 90% 10%, rgba(255,255,255,1), transparent);
 
-    background-size: 500px 500px;
+    background-repeat: repeat;
+    background-size: 300px 300px;
 
-    opacity: 0.3;
+    opacity: 0.75;
 
-    animation: moveStars 200s linear infinite reverse;
+    filter: drop-shadow(0 0 4px rgba(255,255,255,0.6));
+
+    animation: moveStars 120s linear infinite, twinkleStars 5s ease-in-out infinite alternate;
 }
+
+header h1 {
+    color: #aba4e0;
+
+    text-shadow:
+        0 0 6px rgba(122, 92, 255, 0.8),
+        0 0 14px rgba(122, 92, 255, 0.6),
+        0 0 28px rgba(122, 92, 255, 0.4);
+}
+
+.header-icon {
+  position: absolute;
+  left: 30px;
+  top: 1px;
+  width: 200px;
+  height: 160px;
+  margin-right: 10px;
+}
+
+h1 {
+    font-size: 1.8rem;
+    color: #7553d3;
+}
+
+h2 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+
+/* ================= NAVIGATION ================= */
+
+.top-nav {
+    margin-top: 1rem;
+    margin-bottom: 0.8rem;
+    text-align: center;
+}
+
+.top-nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 0.7rem;
+}
+
+.top-nav a:hover {
+    color: #e60012;
+}
+
+
+/* ================= ABOUT PAGE ================= */
 
 .about-page {
     position: relative;
@@ -86,7 +184,6 @@ body::after {
     height: calc(100vh - 180px);
     overflow: hidden;
 }
-
 
 .about-overlay {
     position: absolute;
@@ -135,6 +232,67 @@ body::after {
     margin: 0.2rem 0;
 }
 
+
+/* ================= AUTH ================= */
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-form input {
+    width: 250px;
+}
+
+.auth-form button {
+    padding: 1rem 2rem;
+
+    font-size: 0.9rem;
+    line-height: 1.2;
+
+    box-sizing: border-box;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-form button[type="submit"] {
+    width: auto;
+    height: auto;
+
+    min-width: 150px;
+
+    padding: 1rem 1.5rem;
+
+    font-size: 0.9rem;
+    line-height: 1.2;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+}
+
+.auth-switch {
+    margin-top: 1rem;
+    font-size: 0.6rem;
+}
+
+.auth-switch a {
+    color: #e60012;
+    text-decoration: none;
+}
+
+.auth-switch a:hover {
+    color: #ff2e2e;
+}
+
+
+/* ================= LINKS ================= */
+
 .logout-btn {
     position: absolute;
     top: 20px;
@@ -162,50 +320,6 @@ body::after {
     box-shadow: 0 0 14px rgba(122, 92, 255, 0.7),
                 0 0 28px rgba(122, 92, 255, 0.4);
 
-    background: linear-gradient(135deg, #7a5cff, #c2a8ff);
-}
-
-/* Login/Registration */
-.auth-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.auth-form button {
-    padding: 1rem 2rem;
-
-    font-size: 0.9rem;
-    line-height: 1.2;
-
-    box-sizing: border-box;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.auth-form input {
-    width: 250px;
-}
-
-.auth-switch {
-    margin-top: 1rem;
-    font-size: 0.6rem;
-}
-
-.auth-switch a {
-    color: #e60012;
-    text-decoration: none;
-}
-
-.auth-switch a:hover {
-    color: #ff2e2e;
-}
-
-
-
-.logout-btn:hover {
     background: #ff2e2e;
 }
 
@@ -224,86 +338,8 @@ body::after {
     background: rgba(0,0,0,0.55);
 }
 
-header::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
 
-    background:
-        radial-gradient(1px 1px at 12% 25%, white, transparent),
-        radial-gradient(1px 1px at 78% 44%, white, transparent),
-        radial-gradient(1.5px 1.5px at 30% 70%, rgba(255,255,255,0.8), transparent),
-        radial-gradient(1px 1px at 55% 15%, white, transparent),
-        radial-gradient(2px 2px at 85% 80%, rgba(200,180,255,0.9), transparent),
-        radial-gradient(1px 1px at 65% 60%, white, transparent),
-        radial-gradient(1px 1px at 20% 90%, white, transparent),
-        radial-gradient(1.5px 1.5px at 40% 40%, rgba(255,255,255,0.7), transparent),
-        radial-gradient(1px 1px at 90% 10%, white, transparent);
-
-    background-repeat: repeat;
-    background-size: 300px 300px;
-
-    opacity: 0.4;
-
-    animation: moveStars 120s linear infinite, twinkleStars 5s ease-in-out infinite alternate;
-}
-
-header {
-    text-align: center;
-    padding: 1.8rem 2rem;   /* was ~4rem */
-    background: #000;
-    border-bottom: 3px solid #7a5cff;
-    box-shadow: 0 2px 10px rgba(122, 92, 255, 0.4);
-    position: relative;
-    overflow: hidden;
-}
-
-header h1 {
-    color: #aba4e0;
-
-    text-shadow:
-        0 0 6px rgba(122, 92, 255, 0.8),
-        0 0 14px rgba(122, 92, 255, 0.6),
-        0 0 28px rgba(122, 92, 255, 0.4);
-}
-
-.top-nav {
-    margin-top: 1rem;
-    margin-bottom: 0.8rem;
-    text-align: center;
-}
-
-.top-nav a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 15px;
-    font-size: 0.7rem;
-}
-
-.top-nav a:hover {
-    color: #e60012;
-}
-
-.header-icon {
-  position: absolute;
-  left: 30px;
-  top: 1px;
-  width: 200px;
-  height: 160px;
-  margin-right: 10px;
-  vertical-align: left;
-}
-
-h1 {
-    font-size: 1.8rem;
-    color: #7553d3;
-}
-
-h2 {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-}
+/* ================= FORMS ================= */
 
 .form-section {
     padding: 2rem;
@@ -311,8 +347,14 @@ h2 {
     text-align: center;
 }
 
+.form-section,
+.collection {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
 
-/* Pixel-style inputs for Add Game */
 .form-section input,
 .form-section select {
     padding: 0.6rem 0.8rem;
@@ -334,7 +376,6 @@ h2 {
     outline: none;
 }
 
-/* Focus effect (subtle, not glow) */
 .form-section input:focus,
 .form-section select:focus {
     border-color: #7a5cff;
@@ -359,6 +400,13 @@ h2 {
     accent-color: #e60012;
 }
 
+#year {
+    width: 120px;
+}
+
+
+/* ================= BUTTONS ================= */
+
 button {
     background: linear-gradient(135deg, #6f5cff, #a88cff);
     color: white;
@@ -375,10 +423,6 @@ button {
     transition: all 0.2s ease;
 }
 
-#year {
-    width: 120px;
-}
-
 button:hover {
     transform: translateY(-1px);
 
@@ -387,6 +431,43 @@ button:hover {
 
     background: linear-gradient(135deg, #7a5cff, #c2a8ff);
 }
+
+.form-section button[type="submit"] {
+    width: 40px;
+    height: 40px;
+
+    padding: 0;
+
+    font-size: 0.8rem;
+
+    border-radius: 0;
+
+    background: #1a1535;
+    color: #fff;
+
+    border: 2px solid #000;
+
+    box-shadow:
+        inset -2px -2px 0 #000,
+        inset 2px 2px 0 #555;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-section button[type="submit"]:hover {
+    border-color: #7a5cff;
+
+    box-shadow:
+        inset -2px -2px 0 #0d0b1f,
+        inset 2px 2px 0 #7a5cff;
+
+    transform: translateY(-1px);
+}
+
+
+/* ================= COLLECTION ================= */
 
 .collection {
     padding: 2rem;
@@ -404,9 +485,8 @@ button:hover {
     display: block;
 }
 
-/* TABLE */
 
-/* ===== TABLE (PIXEL PANEL STYLE) ===== */
+/* ================= TABLE ================= */
 
 .table-wrapper {
     margin-top: 1.5rem;
@@ -447,7 +527,8 @@ button:hover {
 }
 
 .retro-table td {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
+    font-weight: normal;
     color: #ddd;
 
     padding: 0.7rem 0.5rem;
@@ -461,20 +542,21 @@ button:hover {
         inset 2px 2px 0 #333;
 }
 
-/* alternating rows */
 .retro-table tbody tr:nth-child(even) td {
     background: #211a45;
 }
 
-/* hover */
 .retro-table tbody tr:hover td {
     background: #2d2560;
 }
 
+
+/* ================= HERO ================= */
+
 .hero {
     width: 100%;
     text-align: center;
-    background: #111; /* same as header for clean blend */
+    background: #111;
     padding-bottom: 2rem;
 }
 
@@ -495,11 +577,8 @@ button:hover {
     text-align: center;
 }
 
-.retro-table tbody td {
-    font-size: 0.8rem;     /* smaller than headers */
-    font-weight: normal;   
-    color: #ddd;           
-}
+
+/* ================= STATUS BUTTONS ================= */
 
 .pixel-status {
     width: 18px;
@@ -510,7 +589,7 @@ button:hover {
 
     box-sizing: border-box;
 
-    background: #1a1535; /* same as your inputs/table */
+    background: #1a1535;
 
     box-shadow:
         inset -2px -2px 0 #000,
@@ -519,17 +598,11 @@ button:hover {
     transition: all 0.15s ease;
 }
 
-.completed-cell {
-    width: 90px;
-    padding: 0;
-}
-
-
 .pixel-status.done {
     background: #2f9e44;
 
     box-shadow:
-        0 0 6px rgba(80, 255, 120, 0.35),   /* outer glow */
+        0 0 6px rgba(80, 255, 120, 0.35),
         inset -2px -2px 0 #14532d,
         inset 2px 2px 0 #6ee7a6;
 }
@@ -546,8 +619,50 @@ button:hover {
     transform: translateY(-1px);
 }
 
+.completed-cell {
+    width: 90px;
+    padding: 0;
+}
+
 .delete-cell {
     text-align: center;
+}
+
+.edit-btn,
+.save-edit-btn,
+.cancel-edit-btn {
+    background: transparent;
+    box-shadow: none;
+    padding: 0.4rem;
+    font-size: 1rem;
+}
+
+.edit-btn:hover,
+.save-edit-btn:hover,
+.cancel-edit-btn:hover {
+    background: transparent;
+    box-shadow: none;
+    transform: scale(1.1);
+}
+
+.edit-input {
+    width: 100%;
+    padding: 0.4rem;
+
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+
+    color: #fff;
+    background: #1a1535;
+
+    border: 2px solid #000;
+    border-radius: 0;
+
+    box-shadow:
+        inset -2px -2px 0 #000,
+        inset 2px 2px 0 #555;
+
+    outline: none;
 }
 
 .trash-btn {
@@ -563,13 +678,8 @@ button:hover {
     transform: scale(1.1);
 }
 
-.form-section,
-.collection {
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
+
+/* ================= FILTER ================= */
 
 .filter-bar {
     display: flex;
@@ -597,7 +707,7 @@ button:hover {
 }
 
 .filter-group label {
-    font-size: 0.7rem;   /* was 0.5 */
+    font-size: 0.7rem;
     color: #ccc;
 }
 
@@ -607,7 +717,7 @@ button:hover {
     padding: 0.5rem 0.6rem;
 
     font-family: 'Press Start 2P', monospace;
-    font-size: 0.65rem;   /* was 0.45 */
+    font-size: 0.65rem;
 
     color: #fff;
     background: #1a1535;
@@ -623,52 +733,8 @@ button:hover {
     cursor: pointer;
 }
 
-.sortable {
-    cursor: pointer;
-}
 
-.sortable:hover {
-    color: #d8d0ff !important;
-    text-shadow: 0 0 8px rgba(122, 92, 255, 0.8);
-}
-
-/* Small pixel-style Add button */
-.form-section button[type="submit"] {
-    width: 40px;
-    height: 40px;
-
-    padding: 0;
-
-    font-size: 0.8rem;
-
-    border-radius: 0;
-
-    background: #1a1535;
-    color: #fff;
-
-    border: 2px solid #000;
-
-    box-shadow:
-        inset -2px -2px 0 #000,
-        inset 2px 2px 0 #555;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.form-section button[type="submit"]:hover {
-    border-color: #7a5cff;
-
-    box-shadow:
-        inset -2px -2px 0 #0d0b1f,
-        inset 2px 2px 0 #7a5cff;
-
-        
-
-    transform: translateY(-1px);
-
-}
+/* ================= SORTING ================= */
 
 .sortable {
     cursor: pointer;
@@ -690,22 +756,4 @@ button:hover {
 
 .sortable.active-sort {
     color: #d8d0ff !important;
-}
-
-.auth-form button[type="submit"] {
-    width: auto;
-    height: auto;
-
-    min-width: 150px;
-
-    padding: 1rem 1.5rem;
-
-    font-size: 0.9rem;
-    line-height: 1.2;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    box-sizing: border-box;
 }

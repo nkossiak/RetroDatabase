@@ -72,16 +72,19 @@ function addGameRow(gameId, title, consoleName, year, completed) {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-        <td>${title}</td>
-        <td>${consoleName}</td>
-        <td>${year}</td>
+        <td class="title-cell">${title}</td>
+        <td class="console-cell">${consoleName}</td>
+        <td class="year-cell">${year}</td>
 
         <td class="completed-cell">
             <button class="pixel-status ${completed === "Yes" ? "done" : "not-done"} toggle-completed-btn"
                     type="button"
                     data-id="${gameId}">
-                ${completed === "Yes" ? "" : ""}
             </button>
+        </td>
+
+        <td class="delete-cell">
+            <button class="edit-btn" type="button" data-id="${gameId}">✎</button>
         </td>
 
         <td class="delete-cell">
@@ -97,6 +100,9 @@ function addGameRow(gameId, title, consoleName, year, completed) {
 gameTableBody.addEventListener("click", async function (event) {
     const removeBtn = event.target.closest(".remove-row-btn");
     const toggleBtn = event.target.closest(".toggle-completed-btn");
+    const editBtn = event.target.closest(".edit-btn");
+    const saveBtn = event.target.closest(".save-edit-btn");
+    const cancelBtn = event.target.closest(".cancel-edit-btn");
 
     if (removeBtn) {
         const gameId = removeBtn.dataset.id;
@@ -117,20 +123,88 @@ gameTableBody.addEventListener("click", async function (event) {
         });
 
         loadGames();
+        return;
+    }
+
+    if (editBtn) {
+        const row = editBtn.closest("tr");
+        enterEditMode(row, editBtn.dataset.id);
+        return;
+    }
+
+    if (saveBtn) {
+        const row = saveBtn.closest("tr");
+        const gameId = saveBtn.dataset.id;
+
+        const title = row.querySelector(".edit-title").value.trim();
+        const consoleName = row.querySelector(".edit-console").value;
+        const year = row.querySelector(".edit-year").value.trim() || null;
+        const completed = row.querySelector(".toggle-completed-btn").classList.contains("done");
+
+        if (title === "") {
+            alert("Please enter a game title.");
+            return;
+        }
+
+        await fetch(`/api/games/${gameId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title: title,
+                console: consoleName,
+                year: year,
+                completed: completed
+            })
+        });
+
+        loadGames();
+        return;
+    }
+
+    if (cancelBtn) {
+        loadGames();
     }
 });
 
+function enterEditMode(row, gameId) {
+    const title = row.querySelector(".title-cell").textContent;
+    const consoleName = row.querySelector(".console-cell").textContent;
+    const year = row.querySelector(".year-cell").textContent;
+
+    row.querySelector(".title-cell").innerHTML = `
+        <input class="edit-input edit-title" type="text" value="${title}">
+    `;
+
+    row.querySelector(".console-cell").innerHTML = `
+        <select class="edit-input edit-console">
+            <option value="NES" ${consoleName === "NES" ? "selected" : ""}>NES</option>
+            <option value="SNES" ${consoleName === "SNES" ? "selected" : ""}>SNES</option>
+        </select>
+    `;
+
+    row.querySelector(".year-cell").innerHTML = `
+        <input class="edit-input edit-year" type="number" value="${year === "N/A" ? "" : year}">
+    `;
+
+    row.querySelector(".edit-btn").outerHTML = `
+        <button class="save-edit-btn" type="button" data-id="${gameId}">✓</button>
+    `;
+
+    row.querySelector(".remove-row-btn").outerHTML = `
+        <button class="cancel-edit-btn" type="button">✕</button>
+    `;
+}
+
 completionFilter.addEventListener("change", loadGames);
+
 document.querySelectorAll(".sortable").forEach(function (header) {
     header.addEventListener("click", function () {
         const selectedSort = header.dataset.sort;
 
         if (currentSort === selectedSort) {
-            if (currentOrder === "asc") {
-                currentOrder = "desc";
-            } else {
-                currentOrder = "asc";
-            }
+            currentOrder = currentOrder === "asc" ? "desc" : "asc";
         } else {
             currentSort = selectedSort;
             currentOrder = "asc";
