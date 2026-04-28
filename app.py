@@ -21,6 +21,11 @@ def home():
         return redirect("/login")
     return render_template("index.html")
 
+# --- ABOUT ---
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
 # --- REGISTER ---
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -109,6 +114,35 @@ def add_game():
 
     db.commit()
     return {"status": "ok"}
+
+# --- DELETE GAME ---
+@app.route("/api/games/<int:game_id>", methods=["DELETE"])
+def delete_game(game_id):
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute(
+        "DELETE FROM games WHERE game_id = %s AND user_id = %s",
+        (game_id, session["user_id"])
+    )
+
+    db.commit()
+    return {"status": "deleted"}
+
+# --- TOGGLE COMPLETED ---
+@app.route("/api/games/<int:game_id>/toggle", methods=["PUT"])
+def toggle_completed(game_id):
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute("""
+        UPDATE games
+        SET completed = NOT completed
+        WHERE game_id = %s AND user_id = %s
+    """, (game_id, session["user_id"]))
+
+    db.commit()
+    return {"status": "updated"}
 
 if __name__ == "__main__":
     app.run(debug=True)
