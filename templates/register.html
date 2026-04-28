@@ -1,6 +1,35 @@
-<form method="POST">
-    <input name="username" placeholder="Username" required>
-    <input name="email" placeholder="Email" required>
-    <input name="password" type="password" placeholder="Password" required>
-    <button>Register</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Retro Collection</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <img src="/static/images/controller.gif" class="header-icon">
+    <h1>Retro Collection</h1>
+    <p>NES & SNES Library</p>
+</header>
+
+<section class="form-section">
+    <h2>Create Account</h2>
+
+    <form method="POST" class="auth-form">
+        <input name="username" placeholder="Username" required>
+        <input name="email" placeholder="Email" required>
+        <input name="password" type="password" placeholder="Password" required>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p class="auth-switch">
+        Already have an account? <a href="/login">Login</a>
+    </p>
+</section>
+
+</body>
+</html>

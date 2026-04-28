@@ -66,17 +66,17 @@ function addGameRow(gameId, title, consoleName, year, completed) {
         <td>${title}</td>
         <td>${consoleName}</td>
         <td>${year}</td>
-        <td class="completed-cell">${completed}</td>
-        <td class="menu-cell">
-            <button class="menu-btn" type="button">&hellip;</button>
-            <div class="dropdown-menu">
-                <button class="dropdown-item toggle-completed-btn" type="button" data-id="${gameId}" title="Toggle Completed">
-                    ✓
-                </button>
-                <button class="dropdown-item remove-row-btn" type="button" data-id="${gameId}" title="Remove">
-                    🗑
-                </button>
-            </div>
+        <td class="completed-cell">
+            <button class="pixel-status ${completed === "Yes" ? "done" : "not-done"} toggle-completed-btn" 
+                    type="button" 
+                    data-id="${gameId}">
+                ${completed === "Yes" ? "ON" : "OFF"}
+            </button>
+        </td>
+        <td class="delete-cell">
+            <button class="trash-btn remove-row-btn" type="button" data-id="${gameId}" title="Remove">
+                🗑
+            </button>
         </td>
     `;
 
@@ -85,23 +85,8 @@ function addGameRow(gameId, title, consoleName, year, completed) {
 
 // Handle menu, delete, and toggle completed buttons
 gameTableBody.addEventListener("click", async function (event) {
-    const menuBtn = event.target.closest(".menu-btn");
     const removeBtn = event.target.closest(".remove-row-btn");
     const toggleBtn = event.target.closest(".toggle-completed-btn");
-
-    if (menuBtn) {
-        const row = menuBtn.closest("tr");
-        const menu = row.querySelector(".dropdown-menu");
-
-        document.querySelectorAll(".dropdown-menu.show").forEach(function (m) {
-            if (m !== menu) {
-                m.classList.remove("show");
-            }
-        });
-
-        menu.classList.toggle("show");
-        return;
-    }
 
     if (removeBtn) {
         const gameId = removeBtn.dataset.id;
@@ -122,14 +107,5 @@ gameTableBody.addEventListener("click", async function (event) {
         });
 
         loadGames();
-    }
-});
-
-// Close dropdown menu when clicking outside
-document.addEventListener("click", function (event) {
-    if (!event.target.closest(".menu-cell")) {
-        document.querySelectorAll(".dropdown-menu.show").forEach(function (menu) {
-            menu.classList.remove("show");
-        });
     }
 });
