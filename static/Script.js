@@ -5,24 +5,61 @@ const yearInput = document.getElementById("year");
 const completedInput = document.getElementById("completed");
 const gameTableBody = document.getElementById("gameTableBody");
 
-gameForm.addEventListener("submit", function (event) {
+// Load games from the database when the page first opens
+document.addEventListener("DOMContentLoaded", function () {
+    loadGames();
+});
+
+// Add a new game
+gameForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const title = titleInput.value.trim();
-    const consoleName = consoleInput.value;
-    const year = yearInput.value.trim() || "N/A";
-    const completed = completedInput.checked ? "Yes" : "No";
 
     if (title === "") {
         alert("Please enter a game title.");
         return;
     }
 
-    addGameRow(title, consoleName, year, completed);
+    const gameData = {
+        title: title,
+        console: consoleInput.value,
+        year: yearInput.value.trim() || null,
+        completed: completedInput.checked
+    };
+
+    await fetch("/api/games", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(gameData)
+    });
+
     gameForm.reset();
+    loadGames();
 });
 
-function addGameRow(title, consoleName, year, completed) {
+// Get all games for the logged-in user
+async function loadGames() {
+    const response = await fetch("/api/games");
+    const games = await response.json();
+
+    gameTableBody.innerHTML = "";
+
+    games.forEach(function (game) {
+        addGameRow(
+            game.game_id,
+            game.title,
+            game.console_name,
+            game.release_year || "N/A",
+            game.completed ? "Yes" : "No"
+        );
+    });
+}
+
+// Display one game row in the table
+function addGameRow(gameId, title, consoleName, year, completed) {
     const row = document.createElement("tr");
 
     row.innerHTML = `
@@ -33,10 +70,10 @@ function addGameRow(title, consoleName, year, completed) {
         <td class="menu-cell">
             <button class="menu-btn" type="button">&hellip;</button>
             <div class="dropdown-menu">
-                <button class="dropdown-item toggle-completed-btn" type="button" title="Toggle Completed">
+                <button class="dropdown-item toggle-completed-btn" type="button" data-id="${gameId}" title="Toggle Completed">
                     ✓
                 </button>
-                <button class="dropdown-item remove-row-btn" type="button" title="Remove">
+                <button class="dropdown-item remove-row-btn" type="button" data-id="${gameId}" title="Remove">
                     🗑
                 </button>
             </div>
@@ -46,51 +83,52 @@ function addGameRow(title, consoleName, year, completed) {
     gameTableBody.appendChild(row);
 }
 
-gameTableBody.addEventListener("click", function (event) {
+// Handle menu, delete, and toggle completed buttons
+gameTableBody.addEventListener("click", async function (event) {
     const menuBtn = event.target.closest(".menu-btn");
     const removeBtn = event.target.closest(".remove-row-btn");
     const toggleBtn = event.target.closest(".toggle-completed-btn");
 
-    // open/close menu
     if (menuBtn) {
         const row = menuBtn.closest("tr");
         const menu = row.querySelector(".dropdown-menu");
 
-        // close other menus
-        document.querySelectorAll(".dropdown-menu.show").forEach(m => {
-            if (m !== menu) m.classList.remove("show");
+        document.querySelectorAll(".dropdown-menu.show").forEach(function (m) {
+            if (m !== menu) {
+                m.classList.remove("show");
+            }
         });
 
         menu.classList.toggle("show");
         return;
     }
 
-    // remove row
     if (removeBtn) {
-        const row = removeBtn.closest("tr");
-        row.remove();
+        const gameId = removeBtn.dataset.id;
+
+        await fetch(`/api/games/${gameId}`, {
+            method: "DELETE"
+        });
+
+        loadGames();
         return;
     }
 
-    // toggle completed
     if (toggleBtn) {
-        const row = toggleBtn.closest("tr");
-        const completedCell = row.querySelector(".completed-cell");
+        const gameId = toggleBtn.dataset.id;
 
-        if (completedCell.textContent.trim() === "Yes") {
-            completedCell.textContent = "No";
-        } else {
-            completedCell.textContent = "Yes";
-        }
+        await fetch(`/api/games/${gameId}/toggle`, {
+            method: "PUT"
+        });
 
-        row.querySelector(".dropdown-menu").classList.remove("show");
+        loadGames();
     }
 });
 
-// close menu when clicking outside
+// Close dropdown menu when clicking outside
 document.addEventListener("click", function (event) {
     if (!event.target.closest(".menu-cell")) {
-        document.querySelectorAll(".dropdown-menu.show").forEach(menu => {
+        document.querySelectorAll(".dropdown-menu.show").forEach(function (menu) {
             menu.classList.remove("show");
         });
     }
