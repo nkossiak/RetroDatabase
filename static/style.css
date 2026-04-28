@@ -60,6 +60,25 @@ body {
     margin: 0.2rem 0;
 }
 
+.logout-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+
+    font-size: 0.6rem;
+    text-decoration: none;
+
+    color: white;
+    background: #e60012;
+    padding: 0.5rem 0.8rem;
+
+    border-radius: 6px;
+}
+
+.logout-btn:hover {
+    background: #ff2e2e;
+}
+
 .back-link {
     margin-top: 1rem;
     display: inline-block;
