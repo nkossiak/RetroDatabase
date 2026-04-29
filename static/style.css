@@ -624,8 +624,37 @@ button:hover {
     padding: 0;
 }
 
+/* ================= DELETE CELL ================= */
+
 .delete-cell {
+    width: 40px;
+    padding: 0;
     text-align: center;
+    cursor: pointer;
+}
+
+/* pixel trash icon directly in cell */
+.delete-cell::before {
+    content: "";
+    display: inline-block;
+
+    width: 12px;
+    height: 10px;
+
+    background: #ff4d4d;
+
+    box-shadow:
+        0 -3px 0 0 #fff,      /* lid */
+        0 0 0 2px #000 inset; /* border */
+}
+
+/* hover feedback */
+.delete-cell:hover::before {
+    background: #ff6666;
+}
+
+.delete-cell:hover {
+    transform: scale(1.05);
 }
 
 /* ================= PIXEL ICON BUTTONS ================= */

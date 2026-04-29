@@ -83,9 +83,7 @@ function addGameRow(gameId, title, consoleName, year, completed) {
             </button>
         </td>
 
-        <td class="delete-cell">
-            <button class="trash-btn remove-row-btn" type="button" data-id="${gameId}" title="Remove"></button>
-        </td>
+    <td class="delete-cell remove-row-btn" data-id="${gameId}" title="Remove"></td>
     `;
 
     gameTableBody.appendChild(row);
